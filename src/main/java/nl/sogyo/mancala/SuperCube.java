@@ -1,7 +1,7 @@
 package nl.sogyo.mancala;
 
 public abstract class SuperCube {
-	protected int stock = 4;
+	protected int stock;
 	protected MancalaPlayer myPlayer;
 	protected SuperCube neighbourCube;
 	
@@ -18,11 +18,32 @@ public abstract class SuperCube {
 		if (stones > 0)
 			neighbourCube.receiveStones(stones);
 		else
-			switchTurn();
+			endOfTurn();
+	}
+	
+	protected int emptyStock() {
+		int myStock = this.stock;
+		this.stock = 0;
+		return myStock;
 	}
 	
 	protected abstract int takeStones(int stones);
-	protected abstract void switchTurn();
+	protected abstract void endOfTurn();
+	protected abstract int captureOpponentStones(int index, int step);
+	protected abstract boolean checkPlayability(SuperCube startingCube);
+	
+	protected void checkPlayability() {
+		if (!neighbourCube.checkPlayability(this)) {
+			neighbourCube.collectAllStones(this);
+		}
+	}
+	
+	protected void collectAllStones(SuperCube startingCube) {
+		myPlayer.collectStones(emptyStock());
+		if (this == startingCube) return;
+		neighbourCube.collectAllStones(startingCube);
+		myPlayer.decideWinnerAndLoser();
+	}
 	
 	protected void addStoneToStock() {
 		stock++;
