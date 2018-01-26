@@ -1,12 +1,18 @@
 package nl.sogyo.mancala;
 
-public class Mancala
+public final class Mancala
 {
+	private Cube firstCube;
+	
     public static void main( String[] args ) {
         System.out.println( "Hello World!" );
     }
     
-    public int test() {
-    	return 7;
+    public Mancala() {
+    	firstCube = new Cube();
     }
+    
+//    public  getCubeInfo(int cubeNumber) {
+//    	return firstCube.getCube(cubeNumber);
+//    }
 }
