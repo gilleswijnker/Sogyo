@@ -5,6 +5,9 @@ import org.junit.Test;
 
 public class MancalaPlayerTest {
 
+	/**
+	 * Creation of player and opponent
+	 */
     @Test
     public void doesFirstPlayerCreateAnotherPlayer() {
     	MancalaPlayer player = new MancalaPlayer();
@@ -33,6 +36,9 @@ public class MancalaPlayerTest {
     	Assert.assertTrue(player.hasTurn() ^ opponent.hasTurn());
     }
     
+    /**
+     * Switching turns
+     */
     @Test
     public void canAPlayerSwitchTurn() {
     	MancalaPlayer player = new MancalaPlayer();

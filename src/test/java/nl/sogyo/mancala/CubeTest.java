@@ -18,7 +18,7 @@ public class CubeTest {
 	@Test
 	public void doesACubeCreateItsNeighbour() {
 		Cube cube = new Cube();
-		Cube neighbourCube = (Cube) cube.getCube(2);
+		Cube neighbourCube = (Cube) cube.getCube(1);
 		Assert.assertNotNull(neighbourCube);
 	}
 	
@@ -43,7 +43,7 @@ public class CubeTest {
 		Cube cube = new Cube();
 		MancalaPlayer player1 = cube.getPlayer();
 		// cube 8 is the first cube after the first kalaha
-		MancalaPlayer player2 =  cube.getCube(7).getPlayer();
+		MancalaPlayer player2 =  cube.getPlayer().getOpponent();
 		Assert.assertFalse(player1 == player2);			
 	}
 	
@@ -103,12 +103,20 @@ public class CubeTest {
 	public void doesCaptureTheOpponentWork() {
 		Cube cube = new Cube();
 		// Player 1 plays 5th cube
+		// 4 4 4 4 5 5
+		// 4 4 4 4 0 5
 		((Cube) cube.getCube(4)).playStones();
-		// Player 2 plays 2nd cube, ending in his kalaha
+		// Player 2 plays 2nd cube, ending in his Kalaha
+		// 5 5 5 5 0 5
+		// 4 4 4 4 0 5
 		((Cube) cube.getCube(8)).playStones();
 		// Player 2 plays 1st cube
+		// 6 6 6 6 1 0
+		// 4 4 4 4 0 5
 		((Cube) cube.getCube(7)).playStones();
 		// Player 1 plays 1st cube, capturing stones from player 2's 2nd cube
+		// 6 6 6 6 1 0  --> 6 6 6 6 0 0
+		// 0 5 5 5 1 5  	0 5 5 5 0 5
 		cube.playStones();
 		Assert.assertEquals(3, cube.getCube(6).getStock());
 	}
@@ -117,12 +125,20 @@ public class CubeTest {
 	public void doesSuccessfullCaptureEmptyOwnCube() {
 		Cube cube = new Cube();
 		// Player 1 plays 5th cube
+		// 4 4 4 4 5 5
+		// 4 4 4 4 0 5
 		((Cube) cube.getCube(4)).playStones();
-		// Player 2 plays 2nd cube, ending in his kalaha
+		// Player 2 plays 2nd cube, ending in his Kalaha
+		// 5 5 5 5 0 5
+		// 4 4 4 4 0 5
 		((Cube) cube.getCube(8)).playStones();
 		// Player 2 plays 1st cube
+		// 6 6 6 6 1 0
+		// 4 4 4 4 0 5
 		((Cube) cube.getCube(7)).playStones();
 		// Player 1 plays 1st cube, capturing stones from player 2's 2nd cube
+		// 6 6 6 6 1 0  --> 6 6 6 6 0 0
+		// 0 5 5 5 1 5  	0 5 5 5 0 5
 		cube.playStones();
 		Assert.assertEquals(0, cube.getCube(4).getStock());
 	}
@@ -133,9 +149,40 @@ public class CubeTest {
 	@Test
 	public void doesGameSignalAWinner() {
 		Cube cube = new Cube(5, 1);
+		// Player 1 plays 2nd cube
+		// 1 1
+		// 1 0
 		((Cube) cube.getCube(1)).playStones();
+		// Player 1 plays 1st cube (note the capture)
+		// 1 1 --> 1 0
+		// 0 1	   0 0
 		cube.playStones();
+		// Player 2 plays 2nd cube, and then has another turn but no moves left
+		// 0 0
+		// 0 0
 		((Cube) cube.getCube(4)).playStones();
+		// Player 1 has 3 stones in his Kalaha, player 2 has 1 stone.
+		// So player 1 is the winner
 		Assert.assertEquals(PlayerState.WIN , cube.getPlayer().getState());
+	}
+	
+	@Test
+	public void areAllStonesAddedToPlayersStockAtEndOfGame() {
+		Cube cube = new Cube(5, 1);
+		// Player 1 plays 2nd cube
+		// 1 1
+		// 1 0
+		((Cube) cube.getCube(1)).playStones();
+		// Player 1 plays 1st cube (note the capture)
+		// 1 1 --> 1 0
+		// 0 1	   0 0
+		cube.playStones();
+		// Player 2 plays 2nd cube, and then has another turn but no moves left
+		// 0 0
+		// 0 0
+		((Cube) cube.getCube(4)).playStones();
+		// Player 1 has 3 stones in his Kalaha, player 2 has 1 stone.
+		// So player 1 is the winner
+		Assert.assertEquals(cube.getPlayer().getStockAtEndOfGame(), 3);
 	}
 }

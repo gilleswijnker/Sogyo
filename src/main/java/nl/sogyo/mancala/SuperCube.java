@@ -5,6 +5,17 @@ public abstract class SuperCube {
 	protected MancalaPlayer myPlayer;
 	protected SuperCube neighbourCube;
 	
+	/////////////////////
+	// abstract methods /
+	/////////////////////
+	protected abstract int takeStones(int stones);
+	protected abstract void endOfTurn();
+	protected abstract int captureOpponentStones(int index, int step);
+	protected abstract boolean checkPlayability(SuperCube startingCube);
+
+	///////////////////
+	// shared methods /
+	///////////////////
 	public int getStock() {
 		return stock;
 	}
@@ -26,11 +37,6 @@ public abstract class SuperCube {
 		this.stock = 0;
 		return myStock;
 	}
-	
-	protected abstract int takeStones(int stones);
-	protected abstract void endOfTurn();
-	protected abstract int captureOpponentStones(int index, int step);
-	protected abstract boolean checkPlayability(SuperCube startingCube);
 	
 	protected void checkPlayability() {
 		if (!neighbourCube.checkPlayability(this)) {

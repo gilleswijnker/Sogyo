@@ -6,6 +6,9 @@ public class MancalaPlayer {
 	private int stockAtEndOfGame = 0;
 	private PlayerState state = PlayerState.UNDECIDED;
 	
+	////////////////
+	// Constructor /
+	////////////////
 	public MancalaPlayer() {
 		isItMyTurn = true;
 		opponent = new MancalaPlayer(this, !isItMyTurn);
@@ -15,7 +18,10 @@ public class MancalaPlayer {
 		this.opponent = opponent;
 		this.isItMyTurn = isItMyTurn; 
 	}
-	
+
+	/////////////////////////////
+	// Methods to play the game / 
+	/////////////////////////////
 	public MancalaPlayer getOpponent() {
 		return opponent;
 	}
@@ -24,12 +30,14 @@ public class MancalaPlayer {
 		return isItMyTurn;
 	}
 	
+	// switch both players turn
 	public void switchTurn() {
 		switchMyTurn();
 		opponent.switchMyTurn();
 	}
 	
-	public void switchMyTurn() {
+	// switch only turn of this player
+	protected void switchMyTurn() {
 		isItMyTurn = !isItMyTurn;
 	}
 	
@@ -42,7 +50,7 @@ public class MancalaPlayer {
 	}
 	
 	public void decideWinnerAndLoser() {
-		if (state != PlayerState.UNDECIDED) return;
+		if (state != PlayerState.UNDECIDED) return; // decision has already been made
 		if (stockAtEndOfGame > opponent.getStockAtEndOfGame())
 			state = PlayerState.WIN;
 		else if (stockAtEndOfGame == opponent.getStockAtEndOfGame())
