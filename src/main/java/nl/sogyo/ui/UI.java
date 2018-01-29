@@ -43,7 +43,7 @@ public class UI {
     	drawBoard();
     	int cube = -1;
     	do {
-    		cube = UserInput.GetUserInputInteger("Pick a cube to play: ");
+    		cube = UserInput.GetUserInputInteger("Pick a cube to play (Q to quit game): ");
     		if (cube >= 1 && cube <= 6) break;
     	} while (true);
     	if (mancala.getPlayersTurn() == Player.PLAYER2) cube += 7;
@@ -70,6 +70,7 @@ final class UserInput {
 			return Integer.parseInt(s);
 		}
 		catch (NumberFormatException ex) {
+			if (s.equals("Q")) System.exit(0);
 			System.out.println("Sorry, but \"" + s + "\" appears not to be an integer...\nTry again please!");
 			return GetUserInputInteger(prompt);
 		}
