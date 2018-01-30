@@ -19,10 +19,17 @@ local.properties
 ### Java
 *.class
 
-# Mobile Tools for Java (J2ME)
+### Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
-# Package Files #
+### Package Files
 *.jar
 *.war
 *.ear
+/target/
+
+### Pictures
+pics/*
+
+### Git
+.gitignore
