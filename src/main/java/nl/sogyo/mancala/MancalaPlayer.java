@@ -1,6 +1,8 @@
 package nl.sogyo.mancala;
 
-public class MancalaPlayer {
+import java.io.Serializable;
+
+public class MancalaPlayer implements Serializable {
 	private MancalaPlayer opponent;
 	private boolean isItMyTurn;
 	private int stockAtEndOfGame = 0;

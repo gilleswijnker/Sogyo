@@ -1,6 +1,8 @@
 package nl.sogyo.mancala;
 
-public abstract class SuperCube {
+import java.io.Serializable;
+
+public abstract class SuperCube implements Serializable {
 	protected int stock;
 	protected MancalaPlayer myPlayer;
 	protected SuperCube neighbourCube;

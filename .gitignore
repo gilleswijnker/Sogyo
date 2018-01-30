@@ -18,6 +18,7 @@ local.properties
 
 ### Java
 *.class
+*.ser
 
 ### Mobile Tools for Java (J2ME)
 .mtj.tmp/

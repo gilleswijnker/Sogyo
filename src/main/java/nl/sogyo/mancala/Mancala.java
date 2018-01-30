@@ -1,12 +1,13 @@
 package nl.sogyo.mancala;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Interface to the Mancala game
  */
 
-public final class Mancala {
+public final class Mancala implements Serializable{
 	private Cube firstCube;
 	
 	////////////////

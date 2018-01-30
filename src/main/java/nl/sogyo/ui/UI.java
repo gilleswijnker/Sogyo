@@ -2,6 +2,8 @@ package nl.sogyo.ui;
 
 import java.util.Scanner;
 import nl.sogyo.mancala.*;
+
+import java.io.*;
 import java.util.Map;
 
 public class UI {
@@ -43,7 +45,7 @@ public class UI {
     	drawBoard();
     	int cube = -1;
     	do {
-    		cube = UserInput.GetUserInputInteger("Pick a cube to play (Q to quit game): ");
+    		cube = askUserWhatToDo();
     		if (cube >= 1 && cube <= 6) break;
     	} while (true);
     	if (mancala.getPlayersTurn() == Player.PLAYER2) cube += 7;
@@ -53,6 +55,63 @@ public class UI {
     	catch (InvalidMoveException ex) {
     		System.out.println("\n\nMOVE NOT VALID\n\n");
     		makeMove();
+    	}
+    }
+    
+    private int askUserWhatToDo() {
+    	try {
+    		String userInput = UserInput.GetUserInputString(
+    				"What do you want to do?\nQ to quit game\nL to load previously saved game\nS to save this game\nNumber (1-6) to play: ");
+    		
+    		switch (userInput) {
+				case "Q": System.exit(0);
+				case "S": saveGame();
+						  break;
+				case "L": loadGame();
+						  break;
+				default: return Integer.parseInt(userInput);
+			}
+		}
+		catch (NumberFormatException ex) {}
+    	return askUserWhatToDo();
+    }
+    
+    private void saveGame() {
+    	try (
+    		FileOutputStream fs = new FileOutputStream("Mancala.ser");
+    		ObjectOutputStream os = new ObjectOutputStream(fs);
+    	) {
+    		os.writeObject(mancala);
+    	}
+    	catch (FileNotFoundException ex) {    		
+    		System.out.println("Cannot save game due to file not found exception:");
+    		System.out.println(ex.getMessage());
+    	}
+    	catch (IOException ex) {
+    		System.out.println("Cannot save game due to IO-exception:");
+    		System.out.println(ex.getMessage());
+    	}
+    }
+    
+    private void loadGame() {
+    	try (
+    		FileInputStream fs = new FileInputStream("Mancala.ser");
+    		ObjectInputStream os = new ObjectInputStream(fs);
+    	) {
+    		mancala = (Mancala) os.readObject();
+    		drawBoard();
+    	}
+    	catch (FileNotFoundException ex) {
+    		System.out.println("Cannot load game due to file not found exception:");
+    		System.out.println(ex.getMessage());
+    	}
+    	catch (IOException ex) {
+    		System.out.println("Cannot load game due to IO-exception:");
+    		System.out.println(ex.getMessage());
+    	}
+    	catch (ClassNotFoundException ex) {
+    		System.out.println("Cannot load game due to class not found exception:");
+    		System.out.println(ex.getMessage());
     	}
     }
 }
@@ -70,7 +129,6 @@ final class UserInput {
 			return Integer.parseInt(s);
 		}
 		catch (NumberFormatException ex) {
-			if (s.equals("Q")) System.exit(0);
 			System.out.println("Sorry, but \"" + s + "\" appears not to be an integer...\nTry again please!");
 			return GetUserInputInteger(prompt);
 		}
